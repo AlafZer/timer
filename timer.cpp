@@ -6,13 +6,14 @@ const char* alf::timer_exception::what() const noexcept {
 	return message;
 }
 
-
-alf::timer::timer(bool condition) : status{ condition }, is_destroy{0} {
+template<typename T>
+alf::timer<T>::timer(bool condition) : status{ condition }, is_destroy{0} {
 	if (status == 1)
 		first = std::chrono::steady_clock::now();
 }
 
-alf::timer::~timer() {
+template<typename T>
+alf::timer<T>::~timer() {
 	if (status == 1 && !is_destroy) {
 		print();
 		is_destroy = 1;
@@ -20,7 +21,8 @@ alf::timer::~timer() {
 	}	
 }
 
-void alf::timer::start() {
+template<typename T>
+void alf::timer<T>::start() {
 	if (status == 0) {
 		first = std::chrono::steady_clock::now();
 		status = 1;
@@ -29,7 +31,8 @@ void alf::timer::start() {
 
 }
 
-void alf::timer::end() {
+template<typename T>
+void alf::timer<T>::end() {
 	if (status == 1) {
 		print();
 		status = 0;
@@ -37,11 +40,12 @@ void alf::timer::end() {
 		throw timer_exception("Ending a timer that has not started");
 }
 
-void alf::timer::print() const {
+template<typename T>
+void alf::timer<T>::print() const {
 
 	const auto last = std::chrono::steady_clock::now();
 
-	std::cout << "=====================================\n" << \
-		std::chrono::duration_cast<std::chrono::milliseconds>(last - first).count() << " ms\n" << "=====================================\n";
+	std::cout << "\n=====================================\n" << \
+	std::chrono::duration_cast<T>(last - first) << "\n=====================================\n";
 
 }
