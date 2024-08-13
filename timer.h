@@ -6,7 +6,7 @@
 namespace alf {
 	using namespace std::chrono_literals;
 	class timer_exception;
-	class timer;	
+	template<typename T> class timer;	
 }
 
 class alf::timer_exception : public std::exception {
@@ -21,9 +21,9 @@ private:
 	const char* message;
 };
 
+template<typename T>
 class alf::timer {
 public:
-	
 	timer(bool = 0);
 
 	~timer();
